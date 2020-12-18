@@ -3,14 +3,17 @@ use std::fs;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    let query = &args[1];
-    let filename = &args[2];
+    let (query, filename) = parse_config(&args);
 
     let contents = fs::read_to_string(filename).expect("Failed to read file");
     let matches = search(query, &contents);
     for matched_line in matches {
         println!("{}", matched_line);
     }
+}
+
+fn parse_config<'a>(args: &'a Vec<String>) -> (&'a str, &'a str) {
+    return (&args[1], &args[2]);
 }
 
 fn search<'a> (query: &str, contents: &'a str) -> Vec<&'a str>{
